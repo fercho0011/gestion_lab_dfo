@@ -1,0 +1,91 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions" template="layout.xhtml">
+	<ui:define name="source">
+		<h:form id="forma">
+			<p:growl id="msg" />
+			<p:panel header="Portal Transaccional" id="pnlFormTransac">
+				<h:panelGrid columns="2" border="0">
+
+					<p:outputLabel id="lblCliente" value="Cliente" />
+					<p:inputText id="txtCliente"
+						binding="#{transaccionalVista.txtCliente}">
+						<p:ajax listener="#{transaccionalVista.txtClienteListener}"
+							update="msg,pnlFormTransac,somCuenta,pnlListTrans" />
+					</p:inputText>
+
+
+					<p:outputLabel id="lblCuenta" value="Nro. Cuenta" />
+
+					<p:selectOneMenu id="somCuenta"
+						binding="#{transaccionalVista.somCuenta}">
+						<f:selectItem itemValue="-1" itemLabel="-SELECCIONE CUENTA-" />
+						<f:selectItems value="#{transaccionalVista.vLstOpCuenta}" />
+						<p:ajax event="change" update="pnlFormTransac,pnlListTrans"
+							listener="#{transaccionalVista.somCuentaListaner}" />
+					</p:selectOneMenu>
+
+
+					<p:outputLabel id="lblUsuario" value="Usuario" />
+					<p:selectOneMenu id="somUsuario"
+						binding="#{transaccionalVista.somUsuario}">
+						<f:selectItem itemValue="-1" itemLabel="-SELECCIONE-" />
+						<f:selectItems value="#{transaccionalVista.vLstOpUsuarios}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel id="lblValor" value="Valor" />
+					<pe:inputNumber id="txtValor"
+						binding="#{transaccionalVista.txtValor}" />
+
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="3" border="0">
+					<p:commandButton id="btnConsignar" value="Consignar"
+						binding="#{transaccionalVista.btnConsignar}" disabled="true"
+						action="#{transaccionalVista.consignarAction}"
+						update="msg,pnlFormTransac,pnlListTrans" />
+					<p:commandButton id="btnRetirar" value="Retirar"
+						binding="#{transaccionalVista.btnRetirar}" disabled="true"
+						action="#{transaccionalVista.retirarAction}"
+						update="msg,pnlFormTransac,pnlListTrans" />
+					<p:commandButton id="btnCancelar" value="Cancelar"
+						binding="#{transaccionalVista.btnCancelar}" disabled="false"
+						action="#{transaccionalVista.cancelarAction}"
+						update="msg,pnlFormTransac,pnlListTrans" />
+
+				</h:panelGrid>
+			</p:panel>
+			<p:panel id="pnlListTrans">
+				<h:panelGrid columns="2" border="0">
+					<p:outputLabel id="lblInfoCuenta" value="Saldo en cuenta:" />
+					<p:outputLabel id="lblValorCuenta"
+						value="#{transaccionalVista.bDValorCuenta}" />
+				</h:panelGrid>
+
+				<p:dataTable id="tblTransacciones" var="vTransaccion"
+					value="#{transaccionalVista.vLstInfoTransacciones}" paginator="true" rows="5"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="3,5,10,15,20" 	>
+					<f:facet name="header">
+            		Historial de transacciones
+        		</f:facet>
+					<p:column headerText="Tipo de transaccion" sortBy="#{vTransaccion.prvStrTipo}" >
+						<p:outputLabel value="#{vTransaccion.prvStrTipo}" />
+					</p:column>
+					<p:column headerText="Fecha" sortBy="#{vTransaccion.prvDtmFecha}">
+						<p:outputLabel value="#{vTransaccion.prvDtmFecha}" />
+					</p:column>
+					<p:column headerText="Valor" >
+						<p:outputLabel value="#{vTransaccion.prvLngValor}" />
+					</p:column>
+				
+
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

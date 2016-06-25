@@ -1,0 +1,37 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<h:head>
+	<title>USBBank::::Banca Web</title>
+</h:head>
+<h:body>
+	<p:layout>
+		<p:layoutUnit position="north" resizable="true" size="140" style="border:0;overflow: hidden;">
+			<p:panel id="pnlHeader" style="border:0px;width:600px;height:100px;background-repeat: no-repeat; background-image: url('http://www.acb.com.cy/pictures/logo_usbbank.jpg');" />
+		</p:layoutUnit>
+		<p:layoutUnit position="west" resizable="true" size="250" minSize="40"	maxSize="400" style="border:0;">
+			<h:form>
+				<p:menu>
+					<p:submenu label="Catalogos">
+						<p:menuitem value="Clientes" icon="ui-icon-disk" outcome="/cliente.xhtml"/>
+						<p:menuitem value="Usuarios" icon="ui-icon-disk" outcome="/usuario.xhtml"/>
+					</p:submenu>
+					<p:submenu label="Portal Transaccional">
+						<p:menuitem value="Consignaciones/Retiros" icon="ui-icon-star" outcome="/transaccional.xhtml"/>
+					</p:submenu>
+					<p:submenu label="Inicio">
+						<p:menuitem value="Inicio" icon="ui-icon-home" outcome="/index.xhtml"/>
+					</p:submenu>
+				</p:menu>
+			</h:form>
+		</p:layoutUnit>
+
+		<p:layoutUnit position="center" style="border:0;">
+			<ui:insert name="source" />
+		</p:layoutUnit>
+	</p:layout>
+</h:body>
+</html>

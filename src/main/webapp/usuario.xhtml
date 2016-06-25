@@ -1,0 +1,80 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="layout.xhtml">
+	<ui:define name="source">
+		<h:form id="forma">
+			<p:growl id="msg" />
+			<p:panel header="CRUD Usuario" id="pnlFormUsuario">
+				<h:panelGrid columns="2" border="0">
+
+					<p:outputLabel id="lblId" value="Cedula" />
+					<p:inputText id="txtCedula" binding="#{usuarioVista.txtCedula}">
+						<p:ajax event="blur" listener="#{usuarioVista.txtCedListender}"
+							update="pnlFormUsuario" />
+					</p:inputText>
+
+					<p:outputLabel id="lblTipoID" value="Tipo Usuario" />
+					<p:selectOneMenu id="somTipoUsuario"
+						binding="#{usuarioVista.somTipoUsuario}">
+						<f:selectItem itemValue="-1" itemLabel="-SELECCIONE-" />
+						<f:selectItems value="#{usuarioVista.vLstOpTiposUsr}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel id="lblNombre" value="Nombre" />
+					<p:inputText id="txtNombre" binding="#{usuarioVista.txtNombre}" />
+
+					<p:outputLabel id="lblLogin" value="Login" />
+					<p:inputText id="txtLogin" binding="#{usuarioVista.txtLogin}" />
+
+					<p:outputLabel id="lblClave" value="Contraseña" />
+					<p:password id="txtClave" binding="#{usuarioVista.txtClave}" />
+				</h:panelGrid>
+
+				<h:panelGrid columns="4" border="0">
+					<p:commandButton id="btnCrear" value="Crear"
+						binding="#{usuarioVista.btnCrear}" disabled="true"
+						action="#{usuarioVista.crearAction}" update="msg,tblUsuarios" />
+					<p:commandButton id="btnModificar" value="Modificar"
+						binding="#{usuarioVista.btnModificar}" disabled="true"
+						action="#{usuarioVista.modificarAction}" update="msg,tblUsuarios" />
+					<p:commandButton id="btnBorrar" value="Borrar"
+						binding="#{usuarioVista.btnBorrar}" disabled="true"
+						action="#{usuarioVista.borrarAction}"
+						update="msg,pnlFormUsuario,tblUsuarios" />
+					<p:commandButton id="btnLimpiar" value="Limpiar"
+						binding="#{usuarioVista.btnLimpiar}" disabled="false"
+						action="#{usuarioVista.limpiarAction}" update="msg,pnlFormUsuario" />
+				</h:panelGrid>
+			</p:panel>
+			<p:panel id="pnlListUsuarios">
+				<p:dataTable id="tblUsuarios" var="vUsuario"
+					value="#{usuarioVista.vLstListaUsuario}" paginator="true" rows="5"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="3,5,10,15,20" selectionMode="single"
+					selection="#{usuarioVista.usuarioSeleccionado}"
+					rowKey="#{vUsuario.usuCedula}">
+					<f:facet name="header">
+            		Todos los Usuarios
+        		</f:facet>
+					<p:ajax event="rowSelect"
+						listener="#{usuarioVista.filaUsuarioSelect}"
+						update=":forma:pnlFormUsuario" />
+					<p:column headerText="Cedula" filterBy="#{vUsuario.usuCedula}">
+						<p:outputLabel value="#{vUsuario.usuCedula}" />
+					</p:column>
+					<p:column headerText="Nombre" filterBy="#{vUsuario.usuNombre}">
+						<p:outputLabel value="#{vUsuario.usuNombre}" />
+					</p:column>
+					<p:column headerText="Login" filterBy="#{vUsuario.usuLogin}">
+						<p:outputLabel value="#{vUsuario.usuLogin}" />
+					</p:column>
+
+
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

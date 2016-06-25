@@ -1,0 +1,86 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="layout.xhtml">
+	<ui:define name="source">
+		<h:form id="forma">
+			<p:growl id="msg" />
+			<p:panel header="CRUD Cliente" id="pnlFormCliente">
+				<h:panelGrid columns="2" border="0">
+
+					<p:outputLabel id="lblId" value="Identificacion" />
+					<p:inputText id="txtId" binding="#{clienteVista.txtID}">
+						<p:ajax event="blur" listener="#{clienteVista.txtIdListener}"
+							update="pnlFormCliente" />
+					</p:inputText>
+
+					<p:outputLabel id="lblTipoID" value="Tipo Identificacion" />
+					<p:selectOneMenu id="somTipoDocumento"
+						binding="#{clienteVista.somTipoDocumento}">
+						<f:selectItem itemValue="-1" itemLabel="-SELECCIONE-" />
+						<f:selectItems value="#{clienteVista.vLstOpTiposDocto}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel id="lblNombre" value="Nombre" />
+					<p:inputText id="txtNombre" binding="#{clienteVista.txtNombre}" />
+
+					<p:outputLabel id="lblTelefono" value="Telefono" />
+					<p:inputText id="txtTelefono" binding="#{clienteVista.txtTelefono}" />
+
+					<p:outputLabel id="lblDireccion" value="Dirección" />
+					<p:inputText id="txtDireccion"
+						binding="#{clienteVista.txtDireccion}" />
+
+					<p:outputLabel id="lblMail" value="Correo E." />
+					<p:inputText id="txtMail" binding="#{clienteVista.txtMail}" />
+				</h:panelGrid>
+
+				<h:panelGrid columns="4" border="0">
+					<p:commandButton id="btnCrear" value="Crear"
+						binding="#{clienteVista.btnCrear}" disabled="true"
+						action="#{clienteVista.crearAction}" update="msg,tblClientes" />
+					<p:commandButton id="btnModificar" value="Modificar"
+						binding="#{clienteVista.btnModificar}" disabled="true"
+						action="#{clienteVista.modificarAction}" update="msg,tblClientes" />
+					<p:commandButton id="btnBorrar" value="Borrar"
+						binding="#{clienteVista.btnBorrar}" disabled="true"
+						action="#{clienteVista.borrarAction}"
+						update="msg,pnlFormCliente,tblClientes" />
+					<p:commandButton id="btnLimpiar" value="Limpiar"
+						binding="#{clienteVista.btnLimpiar}" disabled="false"
+						action="#{clienteVista.limpiarAction}" update="msg,pnlFormCliente" />
+				</h:panelGrid>
+			</p:panel>
+			<p:panel id="pnlListClientes">
+				<p:dataTable id="tblClientes" var="vCliente"
+					value="#{clienteVista.vLstListaCliente}" paginator="true" rows="5"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="3,5,10,15,20" selectionMode="single"
+					selection="#{clienteVista.clienteSeleccionado}"
+					rowKey="#{vCliente.cliId}">
+					<f:facet name="header">
+            		Todos los clientes
+        		</f:facet>
+					<p:ajax event="rowSelect"
+						listener="#{clienteVista.filaClienteSelect}"
+						update=":forma:pnlFormCliente" />
+					<p:column headerText="ID" filterBy="#{vCliente.cliId}">
+						<p:outputLabel value="#{vCliente.cliId}" />
+					</p:column>
+					<p:column headerText="Nombre" filterBy="#{vCliente.cliNombre}">
+						<p:outputLabel value="#{vCliente.cliNombre}" />
+					</p:column>
+					<p:column headerText="Mail" filterBy="#{vCliente.cliMail}">
+						<p:outputLabel value="#{vCliente.cliMail}" />
+					</p:column>
+					<p:column headerText="Telefono" filterBy="#{vCliente.cliTelefono}">
+						<p:outputLabel value="#{vCliente.cliTelefono}" />
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
